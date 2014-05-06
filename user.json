@@ -4,7 +4,8 @@
     "type": "object",
     "properties": {
         "age": {"type": "integer"},
-        "name": {"type": "string"}
+        "name": {"type": "string"},
+        "address": {"$ref": "address.json#"}
     },
     "required": ["name"],
     "additionalProperties": false

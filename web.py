@@ -4,7 +4,7 @@ import os
 import json
 from uuid import uuid4 as uuid
 from flask import Flask, request, jsonify
-from jsonschema import Draft4Validator as Validator
+from jsonschema import Draft4Validator as Validator, RefResolver
 
 
 app = Flask(__name__)
@@ -15,7 +15,9 @@ def validate(schema_filename, data):
         schema = json.load(f)  # cteme JSON Schema primo ze souboru
     Validator.check_schema(schema)  # zkontroluje schema nebo vyhodi vyjimku
 
-    validator = Validator(schema)
+    base_uri = 'file://' + os.path.dirname(schema_filename) + '/'
+    resolver = RefResolver(base_uri, schema)
+    validator = Validator(schema, resolver=resolver)
     return validator.iter_errors(data)  # vraci chyby jednu po druhe
 
 
